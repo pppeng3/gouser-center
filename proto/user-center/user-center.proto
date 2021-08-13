@@ -1,0 +1,148 @@
+syntax = "proto3";
+package user_center;
+option go_package = "gouser_center/proto/user-center";
+
+import "proto/base/base.proto";
+message User
+{
+    int32 id = 1;
+    string username = 2;
+    string password = 3;
+}
+
+message UserExtra
+{
+    int32 id = 1;
+    int32 user_id = 2;
+    string nickname = 3;
+    string email = 4;
+    string phone_number = 5;
+    string avatar_url = 6;
+}
+
+message RegisterRequest
+{
+    User user = 1;
+    UserExtra user_extra = 2;
+
+    base.Base base = 255;
+}
+
+message RegisterResponse
+{
+    int32 id = 1;
+    base.Base base = 255;
+}
+
+message LoginRequest
+{
+    string username = 1;
+    string password = 2;
+
+    base.Base base = 255;
+}
+
+message LoginResponse
+{
+    string access_token = 1;
+    string refresh_token = 2;
+    int64 access_exp = 3;
+    int64 refresh_exp = 4;
+    uint32 user_id = 5;
+    repeated string auth_list = 6;
+
+    base.BaseResp base_resp = 255;
+}
+
+message DeleteRequest
+{
+    int32 id = 1;
+}
+
+message DeleteResponse
+{
+    base.BaseResp base_resp = 255;
+}
+
+message UserInfo
+{
+    int32 user_id = 1;
+    string username = 2;
+    string nickname = 3;
+    string email = 4;
+    string phone_number = 5;
+    string avatar_url = 6;
+}
+
+message CheckTokenRequest
+{
+    string token = 1;
+    bool isRefresh = 2;
+
+    base.Base base = 255;
+}
+
+message CheckTokenResponse
+{
+    UserInfo user = 1;
+
+    base.BaseResp base_resp = 255;
+}
+
+message RefreshRequest
+{
+    string refresh_token = 1;
+
+    base.Base base = 255;
+}
+
+message RefreshResponse
+{
+    string access_token = 1;
+    string refresh_token = 2;
+    int64 access_exp = 3;
+    int64 refresh_exp = 4;
+
+    base.BaseResp base_resp = 255;
+}
+
+message GetUserInfoRequest
+{
+    int32 user_id = 1;
+    string username = 2;
+
+    base.Base base = 255;
+}
+
+message GetUserInfoResponse
+{
+    UserExtra user_info = 1;
+    string username = 2;
+
+    base.BaseResp base_resp = 255;
+}
+
+message AddUserRequest
+{
+    string username = 1;
+
+    base.Base base = 255;
+}
+
+message AddUserResponse
+{
+    string username = 1;
+
+    base.BaseResp base_resp = 255;
+}
+
+service UserCenter
+{
+    rpc Register(RegisterRequest) returns(RegisterResponse) {}
+    rpc Login(LoginRequest) returns(LoginResponse) {}
+    rpc Delete(DeleteRequest) returns(DeleteResponse) {}
+    rpc CheckToken(CheckTokenRequest) returns(CheckTokenResponse) {}
+    rpc Refresh(RefreshRequest) returns(RefreshResponse) {}
+    rpc GetUserInfo(GetUserInfoRequest) returns(GetUserInfoResponse) {}
+    rpc AddUser(AddUserRequest) returns(AddUserResponse) {}
+}
